@@ -1,69 +1,150 @@
-// 1.) Create an object of words with each sylibal defined.
-// Example: ( 'Chair','ch','air' )
+// 1.) Words to learn how to read for the kid.
+
 let words = [
-  { word: "chair", s1: "ch", s2: "air"},
+  { word: "flair", s1: "fl", s2: "air"},
   { word: "stair", s1: "st", s2: "air"},
   { word: "hair", s1: "h", s2: "air"},
   { word: "lair", s1: "l", s2: "air"},
   { word: "fair", s1: "f", s2: "air"},
   { word: "glair", s1: "gl", s2: "air"},
-  { word: "flair", s1: "fl", s2: "air"},
+  { word: "chair", s1: "ch", s2: "air"},
+];
+let words2 = [
+  { word: "charge", s1: "ch", s2: "arge"},
+  { word: "chart", s1: "ch", s2: "art"},
+  { word: "chop", s1: "ch", s2: "op"},
+  { word: "chew", s1: "ch", s2: "ew"},
+  { word: "chip", s1: "ch", s2: "ip"},
+  { word: "chew", s1: "ch", s2: "ew"},
 ];
 
-let index = words.length;
-// console.log("index is now: " + index);
+let index = words.length; // Determine the length of words
+let index2 = words2.length; // Determine the length of words2
 
-// 2.) One word at a time, display each sylibal.
+wizardScore = 0; // Set an initial score the user has.
+document.getElementById("wizardScore").innerHTML = wizardScore;
+
+const startConfetti = () => {
+            setTimeout(function() {
+                confetti.start()
+            }, 1000); // 1000 is time that after 1 second start the confetti ( 1000 = 1 sec)
+        };
+
+        //  Stop
+
+        const stopConfetti = () => {
+            setTimeout(function() {
+                confetti.stop()
+            }, 5000); // 5000 is time that after 5 second stop the confetti ( 5000 = 5 sec)
+        };
+
+function callConfetti() {
+  if (wizardScore / 10 >= 10){
+    startConfetti();
+    stopConfetti();
+  }
+}
+
+// 2.) Display an initial word.
 // Example: ch - air
 
-  for(i=0;i < words.length; i++){
+    document.getElementById("s1").innerHTML = words[2].s1 + " - ";
+    document.getElementById("s2").innerHTML = '&nbsp' + words[2].s2;
 
-    console.log(words[i].word);
-    document.getElementById("s1").innerHTML = words[i].s1 + " - ";
-    document.getElementById("s2").innerHTML = '&nbsp' + words[i].s2;
 
-  }
+// 3.) On click of a button, display a new word with the same suffix
+// Example: fl - air
 
-// 3.) On click of a button, display a new word with the same prefix
-// Example: ch - ick
+document.getElementById("nextWord").addEventListener("click", newWord);
 
-// Set i as words.length
-// Get new word in position ++
 
-document.getElementById("nextPre").addEventListener("click", newPreWord);
-
-wizardScore = 0;
-i = index;
-
-function newPreWord() {
+function newWord() {
 
   if(words[i] == undefined){
-    console.log("No more words."); // FEATURE REQUEST: If no more words exist show start a new lesson button, or a button to cash in wizard points, or start over.
+    console.log("No more words."); // TO DO: Do something after last word.
     i = 0; // For now, just display the first word again and start at the beginning of the loop.
   }
-  console.log("index is now: " + i);
+  // console.log("index is now: " + i);
   document.getElementById("s1").innerHTML = words[i].s1 + " - ";
   document.getElementById("s2").innerHTML = '&nbsp' + words[i].s2;
+
   i++;
 
-  // Write a function that adds a point to a total score everytime
-  // On click of a Wizard Point button score++
-  ii++;
-  //console.log("index is now: " + index);
+  //reset input for the magic Check
+
+  document.getElementById("magicCheck").value = "";
+
   wizardScore++;
-  console.log(wizardScore);
+  document.getElementById("wizardScore").innerHTML = wizardScore;
+  //TO DO: Make these score based style changes more dynamic to occur every 100 points
+  //TO DO: Make them look cooler by triggering a more animated magic dust confeti like overlay being shown
+  callConfetti();
 }
 
 
-// 4.) On click of a button, display a new word with the same suffix
-// Example: sl - ick
+// 4.) On click of a button, display a new word that starts in CH
+// Example: ch - art
 
-// 5.) On click of a button, display a picture of word.
+document.getElementById("nextPre").addEventListener("click", newPre);
+
+i = index2;
+
+function newPre() {
+
+  if(words2[i] == undefined){
+    console.log("No more words."); // TO DO: Do something after last word.
+    i = 0; // For now, just display the first word again and start at the beginning of the loop.
+  }
+  // console.log("index is now: " + i);
+  document.getElementById("s1").innerHTML = words2[i].s1 + " - ";
+  document.getElementById("s2").innerHTML = '&nbsp' + words2[i].s2;
+  i++;
+
+  //reset input for the magic Check
+
+  document.getElementById("magicCheck").value = "";
+
+  wizardScore++;
+  document.getElementById("wizardScore").innerHTML = wizardScore;
+  callConfetti();
+}
+
+// 5.) Write an input area where the user can type in the word and when they do so correctly
+
+var magicCheck = document.getElementById('magicCheck');
+function checkInput() {
+  var value = magicCheck.value;
+  let correctWord = document.getElementById("s1").innerHTML + document.getElementById("s2").innerHTML;
+  correctWord = correctWord.replace('-', '');
+  correctWord = correctWord.replace('&nbsp;', '');
+  correctWord = correctWord.replace('  ', '');
+  console.log(correctWord);
+  if (value === correctWord) {
+    console.log("Correct!");
+    wizardScore+=10;
+    document.getElementById("wizardScore").innerHTML = wizardScore;
+    callConfetti();
+  } else {
+    console.log("Keep trying...");
+  }
+}
+
+// +10 Wizard Points are added,
+// the new words buttons then become visible,
+// and a celebration transistion is called.
+
+// 6.) On click of a button, display a picture of word.
 // Example: Check reading of ( word )
 
-// 6.) Need to store wizardScore to local storage
-// 7.) Need to have a login
+// 7.) Need to store wizardScore to local storage and make cool things happen based on the wizard score.
 
-// 8.) Need to connect to a database.
 
-// 9.) Need to adjust the object to pull from a JSON file or a database.
+// 8.) Need to have a sign up and login - just use local storage for now.
+
+// 9.) Need to connect to a database.
+
+// 10.) Need to adjust the object to pull from a JSON file or a database.
+// - Write a script to build this database scraping from https://www.playosmo.com/kids-learning/3-letter-words-starting-with-o/
+// type URLS for the contents within the first .wp-block-table on the page.
+
+// 11.) Need to make database relational to more easily get prefix and sufix items.

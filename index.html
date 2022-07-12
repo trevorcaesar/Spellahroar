@@ -9,14 +9,30 @@
     <link rel="icon" href="./favicon.ico" type="image/x-icon">
   </head>
   <body>
+    <div class="coin">
+      <div class="front jump">
+        <div class="star"></div>
+        <span id="wizardScore" class="currency">400</span>
+        <div class="shapes">
+          <div class="shape_l"></div>
+          <div class="shape_r"></div>
+          <span class="top">wizard</span>
+          <span class="bottom">score</span>
+        </div>
+      </div>
+      <div class="shadow"></div>
+    </div>
     <div id="overlay"></div>
     <div id="wordContainer">
       <div id="s1"></div>
       <div id="s2"></div>
       <div class="button-wrapper">
-          <button id="nextPre" class="potter-button">Next</button>
+          <button id="nextPre" class="potter-button">Prefixeor</button>
+          <button id="nextWord" class="potter-button">Next Word</button>
       </div>
     </div>
+    <div id="input" class="potter-input"><input type="text" id="magicCheck" onKeyUp="checkInput()"></input></div>
 	<script src="./js/index.js"></script>
+  <script src="./js/confetti.js"></script>
   </body>
 </html>
