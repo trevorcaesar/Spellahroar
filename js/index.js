@@ -2,6 +2,7 @@
 // TODO: Later pull from JSON file
 
 let words = [
+// TODO: Clean up to make sure all 114 items have their sylibles in place correctly.
   { word: "kitty", s1: "kit", s2: "ty"},
   { word: "cookie", s1: "coo", s2: "kie"},
   { word: "window", s1: "win", s2: "dow"},
@@ -117,6 +118,9 @@ let words = [
   { word: "freedom", s1: "fre", s2: "edom"},
   { word: "husband", s1: "hus", s2: "band"},
 ];
+
+// TODO: Later expand into more objects where the s1 or s2 are all matching.
+// This way we can load items in a series which will allow the boy to practice sounds of words together in groups
 let words2 = [
   { word: "charge", s1: "ch", s2: "arge"},
   { word: "chart", s1: "ch", s2: "art"},
@@ -157,8 +161,8 @@ function callConfetti() {
 // 2.) Display an initial word.
 // Example: ch - air
 
-    document.getElementById("s1").innerHTML = words[2].s1 + "-";
-    document.getElementById("s2").innerHTML = '&nbsp' + words[2].s2;
+    document.getElementById("s1").innerHTML = words[0].s1 + "-";
+    document.getElementById("s2").innerHTML = '&nbsp' + words[0].s2;
 
 
 // 3.) On click of a button, display a new word with the same suffix
@@ -168,6 +172,9 @@ document.getElementById("nextWord").addEventListener("click", newWord);
 
 
 function newWord() {
+  i++;
+
+  if(i!=0){
 
   if(words[i] == undefined){
     console.log("No more words."); // TO DO: Do something after last word.
@@ -177,14 +184,13 @@ function newWord() {
   document.getElementById("s1").innerHTML = words[i].s1 + "-";
   document.getElementById("s2").innerHTML = '&nbsp' + words[i].s2;
 
-  i++;
-
   document.getElementById("magicCheck").value = ""; //reset input for the magic Check
   document.getElementById("magicCheck").focus(); //keep the input active for typing the next word
 
   wizardScore++;
   document.getElementById("wizardScore").innerHTML = wizardScore;
   callConfetti();
+  }
 }
 
 
