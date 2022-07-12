@@ -118,6 +118,8 @@ function checkInput() {
   if (value === correctWord) {
     console.log("Correct!");
     wizardScore+=10; // +10 Wizard Points are added,
+    //  Make overlay color flash quickly
+    // Clear the value of the #magicCheck input
     document.getElementById("wizardScore").innerHTML = wizardScore;
     callConfetti(); // and a celebration transistion is called.
   } else {
@@ -125,18 +127,15 @@ function checkInput() {
   }
 }
 
-// 6.) On click of a button, display a picture of word.
-// Example: Check reading of ( word )
+// 6.) Need to store wizardScore to local storage and make cool things happen based on the wizard score.
 
-// 7.) Need to store wizardScore to local storage and make cool things happen based on the wizard score.
+// 7.) Need to have a sign up and login - just use local storage for now.
 
+// 8.) Write a script to build words varible or JSON file by
+// scraping from links like https://www.playosmo.com/kids-learning/3-letter-words-starting-with-o/
+// target => first-of-type .wp-block-table => foreach strong > td > in tr > tbody > table
+// follow next URL => .menu-item-1517 => ul > li > ul > li > a.href
 
-// 8.) Need to have a sign up and login - just use local storage for now.
+// 9.) Need to adjust the WORD object to pull from a JSON file or a database.
 
-// 9.) Need to connect to a database.
-
-// 10.) Need to adjust the object to pull from a JSON file or a database.
-// - Write a script to build this database scraping from https://www.playosmo.com/kids-learning/3-letter-words-starting-with-o/
-// type URLS for the contents within the first .wp-block-table on the page.
-
-// 11.) Need to make database relational to more easily get prefix and sufix items.
+// 10.) Need to make database relational to more easily get prefix and sufix items.
