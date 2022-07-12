@@ -169,11 +169,13 @@ body{overflow: hidden;}/*Layout bug hack*/
   height: 100vh;
   top: 6vh;
   position: absolute;
+  z-index:9;
 }
 
 #s1{
   font-size: 13em;
   color: #fff;
+  text-transform: lowercase;
 }
 
 #s2{
@@ -352,7 +354,7 @@ input:focus-visible{outline: none!important;}
   top: 0;
   border-radius: 10px;
 }
-
+audio{display:none;}
 /*
 =====================================================
 	Dynamic Displays
@@ -412,7 +414,7 @@ span {
   .coin .front .currency, .coin .back .currency {
     overflow: hidden;
     position: absolute;
-    color: #ffbd0b;
+    color: #fff0c6;
     font-size: 34px;
     transform: rotate(-44deg);
     line-height: 4.3;
