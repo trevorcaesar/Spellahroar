@@ -36,7 +36,6 @@ body {
   background-size: cover;
 	font-family: Arial, Helvetica, sans-serif;
 	font-size: 12px;
-  background-position-y: 100px;
 }
 
 p {
@@ -160,7 +159,6 @@ body{overflow: hidden;}/*Layout bug hack*/
   width: 100vw;
   height: 150vh;
   position: absolute;
-  bottom: -100px;
 }
 #wordContainer{
   display: flex;
@@ -169,7 +167,7 @@ body{overflow: hidden;}/*Layout bug hack*/
   align-items: center;
   width: 100vw;
   height: 100vh;
-  top: 23vh;
+  top: 6vh;
   position: absolute;
 }
 
@@ -380,7 +378,7 @@ span {
   bottom: 0;
   left: 80vw;
   right: 20px;
-  top: 82vh;
+  top: 70vh;
   height: 150px;
   width: 150px;
   z-index: 11;

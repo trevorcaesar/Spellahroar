@@ -127,9 +127,18 @@ function checkInput() {
   }
 }
 
-// 6.) Need to store wizardScore to local storage and make cool things happen based on the wizard score.
+// 6.) Need to have a sign up and login - just use local storage for now.
 
-// 7.) Need to have a sign up and login - just use local storage for now.
+// On document load => present sign in / register UI
+
+// On register write username and wizard password to local storage entry [ username, password, wizardScore ]
+
+// On login => check username and wizard password with local storage
+// If => username && password === local entry storage then
+// Hide login registration and show word / buttons / input UI
+
+// 7.) Need to store wizardScore to local storage and make cool things happen based on the wizard score.
+// Set wizardScore = wizardScore from local storage ( Update wizardScore+=10 to write to local storage )
 
 // 8.) Write a script to build words varible or JSON file by
 // scraping from links like https://www.playosmo.com/kids-learning/3-letter-words-starting-with-o/
