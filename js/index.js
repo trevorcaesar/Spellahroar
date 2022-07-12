@@ -64,20 +64,17 @@ function newWord() {
     console.log("No more words."); // TO DO: Do something after last word.
     i = 0; // For now, just display the first word again and start at the beginning of the loop.
   }
-  // console.log("index is now: " + i);
+
   document.getElementById("s1").innerHTML = words[i].s1 + " - ";
   document.getElementById("s2").innerHTML = '&nbsp' + words[i].s2;
 
   i++;
 
-  //reset input for the magic Check
-
-  document.getElementById("magicCheck").value = "";
+  document.getElementById("magicCheck").value = ""; //reset input for the magic Check
+  document.getElementById("magicCheck").focus(); //keep the input active for typing the next word
 
   wizardScore++;
   document.getElementById("wizardScore").innerHTML = wizardScore;
-  //TO DO: Make these score based style changes more dynamic to occur every 100 points
-  //TO DO: Make them look cooler by triggering a more animated magic dust confeti like overlay being shown
   callConfetti();
 }
 
@@ -95,21 +92,20 @@ function newPre() {
     console.log("No more words."); // TO DO: Do something after last word.
     i = 0; // For now, just display the first word again and start at the beginning of the loop.
   }
-  // console.log("index is now: " + i);
+
   document.getElementById("s1").innerHTML = words2[i].s1 + " - ";
   document.getElementById("s2").innerHTML = '&nbsp' + words2[i].s2;
   i++;
 
-  //reset input for the magic Check
-
-  document.getElementById("magicCheck").value = "";
+  document.getElementById("magicCheck").value = ""; //reset input for the magic Check
+  document.getElementById("magicCheck").focus(); //keep the input active for typing the next word
 
   wizardScore++;
   document.getElementById("wizardScore").innerHTML = wizardScore;
   callConfetti();
 }
 
-// 5.) Write an input area where the user can type in the word and when they do so correctly
+// 5.) An input area where the user can type in the word and when they do so correctly
 
 var magicCheck = document.getElementById('magicCheck');
 function checkInput() {
@@ -121,17 +117,13 @@ function checkInput() {
   console.log(correctWord);
   if (value === correctWord) {
     console.log("Correct!");
-    wizardScore+=10;
+    wizardScore+=10; // +10 Wizard Points are added,
     document.getElementById("wizardScore").innerHTML = wizardScore;
-    callConfetti();
+    callConfetti(); // and a celebration transistion is called.
   } else {
     console.log("Keep trying...");
   }
 }
-
-// +10 Wizard Points are added,
-// the new words buttons then become visible,
-// and a celebration transistion is called.
 
 // 6.) On click of a button, display a picture of word.
 // Example: Check reading of ( word )
