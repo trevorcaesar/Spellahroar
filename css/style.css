@@ -32,7 +32,7 @@ body {
 }
 /* /END RESET */
 body {
-	background: #6d6d6d url("img/background.jpg") top repeat-x;
+	background: #6d6d6d url("../images/background.jpg") top repeat-x;
   background-size: cover;
 	font-family: Arial, Helvetica, sans-serif;
 	font-size: 12px;
@@ -137,8 +137,7 @@ html[xmlns] .clearfix {
 	Fonts
 ===================================================== */
 
-@import url('https://fonts.googleapis.com/css2?family=La+Belle+Aurore&display=swap');
-
+@import url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=La+Belle+Aurore&display=swap');
 /*
 =====================================================
 	Layout & Framework
@@ -159,6 +158,8 @@ body{overflow: hidden;}/*Layout bug hack*/
   width: 100vw;
   height: 150vh;
   position: absolute;
+  z-index:1;
+  top:0px;
 }
 #wordContainer{
   display: flex;
@@ -176,11 +177,13 @@ body{overflow: hidden;}/*Layout bug hack*/
   font-size: 13em;
   color: #fff;
   text-transform: lowercase;
+  text-shadow: 22px 12px 20px #000;
 }
 
 #s2{
   font-size: 10em;
   color: #fff;
+  text-shadow:22px 12px 20px #000;
 }
 
 .btn{ flex-basis: 100%; display: flex; align-items: center; justify-content: center;}
@@ -190,7 +193,7 @@ body{overflow: hidden;}/*Layout bug hack*/
   justify-content: center;
   align-items: center;
   display: flex;
-  top: -37vh;
+  top: -36vh;
   position: relative;
 }
 
@@ -417,7 +420,7 @@ span {
     color: #fff0c6;
     font-size: 34px;
     transform: rotate(-44deg);
-    line-height: 4.3;
+    line-height: 4;
     width: 100%;
     height: 100%;
     text-align: center;
@@ -512,3 +515,12 @@ span {
     transform: scale(0.8); }
   100% {
     opacity: 0.8; } }
+
+
+  /* Login and Registration */
+
+  .zmdi{
+    font:normal normal normal 12px/1 'Material-Design-Iconic-Font'!important;
+    font-size:1.5em!important;
+    transform: rotate(15deg)!important;
+  }
