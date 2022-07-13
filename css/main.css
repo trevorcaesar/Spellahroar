@@ -408,6 +408,7 @@ iframe {
 }
 
 .login100-form-btn {
+  margin:0px 10px;
   font-family: Poppins-Medium;
   font-size: 16px;
   color: #555555;
@@ -430,7 +431,6 @@ iframe {
   background: linear-gradient(bottom, #d5d6ff, #f1f1f1);
   position: relative;
   z-index: 1;
-
   -webkit-transition: all 0.4s;
   -o-transition: all 0.4s;
   -moz-transition: all 0.4s;

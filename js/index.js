@@ -130,113 +130,194 @@ let words2 = [
   { word: "chew", s1: "ch", s2: "ew"},
 ];
 
-let index = words.length; // Determine the length of words
-let index2 = words2.length; // Determine the length of words2
+// Determine the length of words varibles
+// and set inital value of i
+let index = words.length;
+let index2 = words2.length;
 let i = 1;
 
-wizardScore = 0; // Set an initial score the user has.
-document.getElementById("wizardScore").innerHTML = wizardScore;
+// Login and Registration Items
+//
+// After a successful login or registration...
+function afterLoginOrSignup(){
 
-const startConfetti = () => {
-            setTimeout(function() {
-                confetti.start()
-            }, 1000); // 1000 is time that after 1 second start the confetti ( 1000 = 1 sec)
-        };
+  // Hide the login container
+  let loginCont = document.getElementById("loginCont");
+  loginCont.classList.add("hidden");
 
-        //  Stop
+  // Get local stored wizard point total
+  let wizardScoreTotal = localStorage.setItem('wizardScoreTotal',wizardScore);
+  let getWizardScoreLocal = localStorage.getItem('wizardScoreTotal');
 
-        const stopConfetti = () => {
-            setTimeout(function() {
-                confetti.stop()
-            }, 5000); // 5000 is time that after 5 second stop the confetti ( 5000 = 5 sec)
-        };
-
-function callConfetti() {
-  if (wizardScore / 10 >= 10){
-    startConfetti();
-    stopConfetti();
+  //check to see if localstrage wizardScoreTotal is greater than 0
+  if(getWizardScoreLocal >= 0){
+      document.getElementById("wizardScore").innerHTML = wizardScore;
   }
+  if(getWizardScoreLocal == "[object HTMLSpanElement]" || getWizardScoreLocal == undefined){
+      wizardScore = 0;
+      localStorage.setItem('wizardScoreTotal',wizardScore);
+      document.getElementById("wizardScore").innerHTML = wizardScore;
+  }
+
+  // Start playing music on login
+  setTimeout(function playMusic(){
+    document.getElementById("my_audio").play();
+  })
+
+  // Place the focus on the input field so user can start typing words as they sound them out.
+  document.getElementById("magicCheck").focus();
 }
 
-// 2.) Display an initial word.
+// Function for User Sign Up
+function Signup(){
+
+    let name = document.getElementById('uname');
+    let pw = document.getElementById('psw');
+
+    // Do some basic validation on the form
+    // TODO: instead of alerts - write the messages to the form
+    if(name.value.length == 0){
+        alert('Please fill in your username');
+
+    }else if(pw.value.length == 0){
+        alert('Please fill in password');
+
+    }else if(name.value.length == 0 && pw.value.length == 0){
+        alert('Please fill in your username and password');
+
+    }else{
+        // TODO - eventually add proper login and registration.
+        // Right now just use local storage
+        localStorage.setItem('username', name.value);
+        localStorage.setItem('pw', pw.value);
+        localStorage.setItem('wizardScoreTotal',0);
+        console.log("account created.");
+        afterLoginOrSignup();
+
+    }
+}
+
+//Login
+function Login(){
+    let storedName = localStorage.getItem('username');
+    let storedPw = localStorage.getItem('pw');
+        // If a user has registered, then their wizard score has been set to
+        // 0 or they have a current wizard score...
+        // Let's get that so their progress is reflected.
+        wizardScore = localStorage.getItem('wizardScoreTotal');
+
+    let userName = document.getElementById('uname');
+    let userPw = document.getElementById('psw');
+    let userRemember = document.getElementById("rememberMe");
+
+    if(userName.value == storedName && userPw.value == storedPw){
+      //run the after sign in function...
+      afterLoginOrSignup();
+    }else{
+      alert('Error on login');
+    }
+}
+
+// Function to start or stop confetti overlay.
+const startConfetti = () => {
+    setTimeout(function() {
+        confetti.start()
+    }, 1000);
+};
+
+const stopConfetti = () => {
+    setTimeout(function() {
+        confetti.stop()
+    }, 5000);
+};
+
+// Any time someone has more than 10 points, make confetti fall.
+function callConfetti() {
+    if (wizardScore >= 10){
+      startConfetti();
+      stopConfetti();
+    }
+}
+
+// TODO: It would be cool to write more evaluations on wizardScore to interact with the DOM
+// in ways that will keep the user engaged.
+
+//
+// Display an initial word.
 // Example: ch - air
 
-    document.getElementById("s1").innerHTML = words[0].s1 + "-";
-    document.getElementById("s2").innerHTML = '&nbsp' + words[0].s2;
+  document.getElementById("s1").innerHTML = words[0].s1 + "-";
+  document.getElementById("s2").innerHTML = '&nbsp' + words[0].s2;
 
-
-// 3.) On click of a button, display a new word with the same suffix
-// Example: fl - air
+//
+// On click of a button, display a new word
 
 document.getElementById("nextWord").addEventListener("click", newWord);
-
 
 function newWord() {
   i++;
 
   if(i!=0){
 
+  // Check to see if no result is recieved.
   if(words[i] == undefined){
-    console.log("No more words."); // TO DO: Do something after last word.
-    i = 0; // For now, just display the first word again and start at the beginning of the loop.
+    // TO DO: Do something after last word.
+    console.log("No more words.");
+    // For now, just display the first word again and start at the beginning of the loop.
+    i = 0;
   }
 
+  // For any result, let's update the word shown to the user.
   document.getElementById("s1").innerHTML = words[i].s1 + "-";
   document.getElementById("s2").innerHTML = '&nbsp' + words[i].s2;
 
-  document.getElementById("magicCheck").value = ""; //reset input for the magic Check
-  document.getElementById("magicCheck").focus(); //keep the input active for typing the next word
+  // Reset input for the Magic Check and set the focus on that field.
+  document.getElementById("magicCheck").value = "";
+  // Keep the input active for typing the next word easily.
+  document.getElementById("magicCheck").focus();
 
+  // Reward the user for getting a new word to say and type.
   wizardScore++;
+
+  // Update the local storage to reflect their new score.
+  // TODO: Will have to update once I port this to a proper db.
+  localStorage.setItem('wizardScoreTotal',wizardScore);
+
+  // Update their score in the UI.
   document.getElementById("wizardScore").innerHTML = wizardScore;
   callConfetti();
   }
 }
 
-
-// 4.) On click of a button, display a new word that starts in CH
-// Example: ch - art
-
-// document.getElementById("nextPre").addEventListener("click", newPre);
 //
-// i = index2;
-//
-// function newPre() {
-//
-//   if(words2[i] == undefined){
-//     console.log("No more words."); // TO DO: Do something after last word.
-//     i = 0; // For now, just display the first word again and start at the beginning of the loop.
-//   }
-//
-//   document.getElementById("s1").innerHTML = words2[i].s1 + " - ";
-//   document.getElementById("s2").innerHTML = '&nbsp' + words2[i].s2;
-//   i++;
-//
-//   document.getElementById("magicCheck").value = ""; //reset input for the magic Check
-//   document.getElementById("magicCheck").focus(); //keep the input active for typing the next word
-//
-//   wizardScore++;
-//   document.getElementById("wizardScore").innerHTML = wizardScore;
-//   callConfetti();
-// }
-
-// 5.) An input area where the user can type in the word and when they do so correctly
+// Lets create a field where the user can type in the word they are reading,
+// and lets also make a function that checks to see if what they typed is correct.
 
 let magicCheck = document.getElementById('magicCheck');
 function checkInput() {
   let value = magicCheck.value;
+
+  // Since the words are displayed with their sylibles,
+  // we will have to clean up the word first by removing the - and empty space character.
   let correctWord = document.getElementById("s1").innerHTML+document.getElementById("s2").innerHTML;
       correctWord = correctWord.replace('-','')
       correctWord = correctWord.replace('&nbsp;','')
+
   console.log("The correct word should be " +correctWord);
+
+  // Now lets preform a check to see if the word is correct.
   if (value === correctWord) {
     console.log("Correct!");
-    wizardScore+=10; // +10 Wizard Points are added,
-    //  Make overlay color flash quickly
-    // Clear the value of the #magicCheck input
+    // Reward the user with a point.
+    wizardScore++;
+
+    // TODO: Make overlay color flash quickly.
+    // Update their score in the UI.
     document.getElementById("wizardScore").innerHTML = wizardScore;
-    callConfetti(); // and a celebration transistion is called.
+    callConfetti();
   } else {
+    // While they have not typed the correct response, encourage them to keep trying.
+    // TODO: Maybe we should consider having a section of the UI display these messages.
     console.log("Keep trying...");
   }
 }
@@ -244,61 +325,18 @@ function checkInput() {
 
 
 
-// 6.) Need to have a sign up and login - just use local storage for now.
-
-// On document load => present sign in / register UI
-// Cool for that UI: https://codepen.io/oliviale/pen/ymbmqa
-
-// On register write username and wizard password to local storage entry [ username, password, wizardScore ]
-
-function Login()
-{
-
-  //For now we'll just hide the .container-login100 anytime a user clicks login
-  let loginCont = document.getElementById("loginCont");
-  loginCont.classList.add("hidden");
-
-  setTimeout(function playMusic(){
-    document.getElementById("my_audio").play();// Add Harry Potter theme song playing in the background on a loop 5 seconds after the page loads.
-
-  })//start playing music on login
-
-    document.getElementById("magicCheck").focus(); // Place the focus on the input field so user can start typing words as they sound them out.
+// NEXT FEATURE => Need to store i in local storage and modify functoins to pull
+//                 from local storage to display the last word where they last left off
+//                 also need to update the local storage i var every time a newWord is
+//                 called.
 
 
-  //NEXT TODO: =====>
-  //On Submit of login form
-  //https://codepen.io/karleenchoie/pen/RwNaQzw
 
-  //Get value of user from uname
-  //Get value of psw
 
-  //Check if items exist in local storage
-
-  //If items exist, then hide .container-login100
-
-  //Else - write items to local storage,
-  //Then hide .container-login100
-
-  //Figure out then storing and retrieving WizardScore in local storage
-
-}
-// On login => check username and wizard password with local storage
-// If => username && password === local entry storage then
-// Hide login registration and show word / buttons / input UI
+// NEXT FEATURE => Need to adjust the WORD object to pull from a JSON file or a database.
 
 
 
 
 
-// 7.) Need to store wizardScore to local storage and make cool things happen based on the wizard score.
-// Set wizardScore = wizardScore from local storage ( Update wizardScore+=10 to write to local storage )
-
-// 8.) Write a script to build words varible or JSON file by
-// scraping from links like https://www.playosmo.com/kids-learning/3-letter-words-starting-with-o/
-// target => first-of-type .wp-block-table => foreach strong > td > in tr > tbody > table
-// follow next URL => .menu-item-1517 => ul > li > ul > li > a.href
-
-// 9.) Need to adjust the WORD object to pull from a JSON file or a database.
-
-// 10.) Need to make database relational to more easily get prefix and sufix items.
+// NEXT FEATURE => Need to port to database and add proper registration / login / updates to score.
