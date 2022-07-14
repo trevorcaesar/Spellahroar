@@ -139,8 +139,6 @@ let index2 = words2.length;
 let i = 1;
 
 // Function for User Sign Up
-// TODO: Rewrite so that the user profile is stored in an array
-//       so that multiple users can register.
 function Signup(){
 
     let name = document.getElementById('uname');
@@ -226,6 +224,10 @@ function afterLoginOrSignup(){
       document.getElementById("wizardScore").innerHTML = wizardScore;
   }
 
+  // Call function that gets the first word to display
+  // based on current word value in storage
+  getFirstWord();
+
   // Start playing music on login
   setTimeout(function playMusic(){
     document.getElementById("my_audio").play();
@@ -259,7 +261,7 @@ function callConfetti() {
 // TODO: It would be cool to write more evaluations on wizardScore to interact with the DOM
 // in ways that will keep the user engaged.
 
-//
+function getFirstWord(){
 // Display an initial word on load so interface is ready when they login or register.
 // Example: ch - air
   wordPosition = localStorage.getItem('wordPosition');
@@ -272,7 +274,7 @@ function callConfetti() {
   localStorage.setItem('wordPosition',wordPosition);
 
   console.log("The index of the current word is: " +wordPosition);
-
+}
 //
 // On click of a button or form submit, display a new word
 
@@ -356,11 +358,13 @@ function checkInput() {
 
 
 
-
-// NEXT TODO => Need to adjust the WORD object to pull from a JSON file or a database.
-
-
+// NEXT TODO: Rewrite so that the user profile is stored in an array
+//       so that multiple users can register.
 
 
 
-// NEXT FEATURE => Need to port to database and add proper registration / login / updates to score.
+// TODO => Need to adjust the WORD object to pull from a JSON file or a database.
+
+
+
+// TODO => Need to port to database and add proper registration / login / updates to score.
