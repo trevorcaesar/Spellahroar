@@ -118,16 +118,22 @@ let words = [
   { word: "husband", s1: "hus", s2: "band"},
 ];
 
-// TODO: Later expand into more objects where the s1 or s2 are all matching.
-// This way we can load items in a series which will allow the boy to practice
-//      sounds of words together in groups
+// Recently adjusted the code so that the words are built dynamically on load
+// and on an event listener associated to a button.
+
+// Currently only pulling from words and not words2
+
+// DETERMINE => How would you like the user to be able to access these sets?
+//              Maybe when they get to a certain point level,
+//              Set the dictionary to words or words2 varible
+//              Reset current word in storage to 0
 
 let words2 = [
   { word: "ladybug",s1: "la",s2: "dy",s3: "bug"},
   { word: "triangle",s1: "tri",s2: "an",s3: "gle"},
   { word: "newspaper",s1: "news",s2: "pa",s3: "per"},
   { word: "sunflower",s1: "sun",s2: "fl",s3: "ower"},
-  { word: "cheeseburger",s1: "cheese",s2: "burg",s3: "ger"},
+  { word: "cheeseburger",s1: "cheese",s2: "burg",s3: "er"},
   { word: "elephant",s1: "el",s2: "e",s3: "phant"},
   { word: "raspberry",s1: "rasp",s2: "ber",s3: "ry"},
   { word: "bulldozer",s1: "bull",s2: "doz",s3: "er"},
@@ -239,9 +245,11 @@ let words2 = [
   { word: "potato",s1: "po",s2: "ta",s3: "to"},
 ];
 
+// Set Inital Library of Words
+let dictionary = words;
+
 // Determine the length of words varibles
-let index = words.length;
-let index2 = words2.length;
+let index = dictionary.length;
 
 // set inital value of i
 let i = 1;
@@ -335,6 +343,7 @@ function afterLoginOrSignup(){
   // Call function that gets the first word to display
   // based on current word value in storage
   getFirstWord();
+  cleanUpLastWord();
 
   // Start playing music on login
   setTimeout(function playMusic(){
@@ -364,17 +373,49 @@ function callConfetti() {
       startConfetti();
       stopConfetti();
     }
+    if (wizardScore >= 100){
+      dictionary = words2;
+    }
 }
 
 // TODO: It would be cool to write more evaluations on wizardScore to interact with the DOM
 // in ways that will keep the user engaged.
 
+
+wordPosition = localStorage.getItem('wordPosition');
+
+
+function cleanUpLastWord(){
+    let lastSyl = document.getElementById("wordContainer").lastChild.innerHTML;
+    let editedlastSyl = lastSyl.slice(0, -1);
+    document.getElementById("wordContainer").lastChild.innerHTML = editedlastSyl;
+}
+
+function deleteChildren() {
+        var e = document.querySelector("div#wordContainer");
+        e.innerHTML = "";
+    }
+
 function getFirstWord(){
+
+  Object.entries(dictionary[wordPosition]).map(([key, value]) => {
+    if(key == "word"){
+      document.getElementById("wordContainer").append(Object.assign(document.createElement('div'),{id:"word"},{textContent:value}));
+    }else{
+      document.getElementById("wordContainer").append(Object.assign(document.createElement('div'),{id:key},{textContent:value+"-"}));
+    }
+});
+
+
 // Display an initial word on load so interface is ready when they login or register.
 // Example: ch - air
-  wordPosition = localStorage.getItem('wordPosition');
-  document.getElementById("s1").innerHTML = words[wordPosition].s1 + "-";
-  document.getElementById("s2").innerHTML = '&nbsp' + words[wordPosition].s2;
+
+// document.getElementById("wordContainer").append(Object.assign(document.createElement('div'),{class:"button-wrapper"},{id="nextWord"}));
+// document.getElementById("nextWord").append(Object.assign(document.createElement('button'),{class:"potter-button"},{textContent:"Next Word"}));
+
+
+  // document.getElementById("s1").innerHTML = words[wordPosition].s1 + "-";
+  // document.getElementById("s2").innerHTML = '&nbsp' + words[wordPosition].s2;
 
   // After loading the initial word, increase the word position score
   // and write that to local storage.
@@ -395,7 +436,7 @@ function newWord() {
   if(wordPosition!=0){
 
   // Check to see if no result is recieved.
-  if(words[wordPosition] == undefined){
+  if(dictionary[wordPosition] == undefined){
     // TO DO: Do something after last word.
     console.log("No more words.");
     // For now, just display the first word again and start at the beginning of the loop.
@@ -403,8 +444,9 @@ function newWord() {
   }
 
   // For any result, let's update the word shown to the user.
-  document.getElementById("s1").innerHTML = words[wordPosition].s1 + "-";
-  document.getElementById("s2").innerHTML = '&nbsp' + words[wordPosition].s2;
+  deleteChildren();
+  getFirstWord();
+  cleanUpLastWord();
 
   // Reset input for the Magic Check and set the focus on that field.
   document.getElementById("magicCheck").value = "";
@@ -437,9 +479,9 @@ function checkInput() {
 
   // Since the words are displayed with their sylibles,
   // we will have to clean up the word first by removing the - and empty space character.
-  let correctWord = document.getElementById("s1").innerHTML+document.getElementById("s2").innerHTML;
-      correctWord = correctWord.replace('-','')
-      correctWord = correctWord.replace('&nbsp;','')
+  let correctWord = document.getElementById("word").innerHTML;
+      correctWord = correctWord.replace('-','');
+      correctWord = correctWord.replace('&nbsp;','');
 
   console.log("The correct word should be " +correctWord);
 

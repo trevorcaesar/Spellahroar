@@ -105,7 +105,7 @@ a img {
 /* / */
 
 /* add a hidden class to hide and show things with js */
-.hidden{
+.hidden, #word{
   display: none!important;
 }
 
@@ -168,7 +168,7 @@ body{overflow: hidden;}/*Layout bug hack*/
   align-items: center;
   width: 100vw;
   height: 100vh;
-  top: 6vh;
+  top: -14vh;
   position: absolute;
   z-index:9;
 }
@@ -178,12 +178,32 @@ body{overflow: hidden;}/*Layout bug hack*/
   color: #fff;
   text-transform: lowercase;
   text-shadow: 22px 12px 20px #000;
+  padding: 0px 10px;
 }
 
 #s2{
   font-size: 10em;
+  color: #d7ef65;
+  text-shadow:22px 12px 20px #000;
+  padding: 0px 10px;
+  animation: color-change 60s infinite;
+}
+@keyframes color-change {
+  0% { color: #fff; }
+  15% { color: #fffb00; }
+  30% { color: #48ff00; }
+  45% { color: #00ffd5; }
+  60% { color: #002bff; }
+  75% { color: #7a00ff; }
+  90% { color: #ff00c8; }
+  100% { color: #fff; }
+}
+
+#s3{
+  font-size: 10em;
   color: #fff;
   text-shadow:22px 12px 20px #000;
+  padding: 0px 10px;
 }
 
 .btn{ flex-basis: 100%; display: flex; align-items: center; justify-content: center;}
@@ -193,7 +213,8 @@ body{overflow: hidden;}/*Layout bug hack*/
   justify-content: center;
   align-items: center;
   display: flex;
-  top: -36vh;
+  top: 51vh;
+  z-index:10;
   position: relative;
 }
 
