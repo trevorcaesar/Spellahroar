@@ -2,7 +2,6 @@
 // TODO: Later pull from JSON file
 
 let words = [
-// TODO: Clean up to make sure all 114 items have their sylibles in place correctly.
   { word: "kitty", s1: "kit", s2: "ty"},
   { word: "cookie", s1: "cook", s2: "ie"},
   { word: "window", s1: "win", s2: "dow"},
@@ -12,7 +11,7 @@ let words = [
   { word: "garden", s1: "gar", s2: "den"},
   { word: "castle", s1: "cas", s2: "tle"},
   { word: "oven", s1: "ov", s2: "en"},
-  { word: "rocket", s1: "roc", s2: "ket"},
+  { word: "rocket", s1: "rock", s2: "et"},
   { word: "mommy", s1: "mom", s2: "my"},
   { word: "apple", s1: "app", s2: "le"},
   { word: "daddy", s1: "dad", s2: "dy"},
@@ -41,7 +40,7 @@ let words = [
   { word: "ketchup", s1: "ket", s2: "chup"},
   { word: "tiger", s1: "ti", s2: "ger"},
   { word: "doctor", s1: "doc", s2: "tor"},
-  { word: "glasses", s1: "gl", s2: "asses"},
+  { word: "glasses", s1: "glass", s2: "es"},
   { word: "necklace", s1: "nek", s2: "lace"},
   { word: "pocket", s1: "pock", s2: "et"},
   { word: "cowboy", s1: "cow", s2: "boy"},
@@ -120,7 +119,9 @@ let words = [
 ];
 
 // TODO: Later expand into more objects where the s1 or s2 are all matching.
-// This way we can load items in a series which will allow the boy to practice sounds of words together in groups
+// This way we can load items in a series which will allow the boy to practice
+//      sounds of words together in groups
+
 let words2 = [
   { word: "charge", s1: "ch", s2: "arge"},
   { word: "chart", s1: "ch", s2: "art"},
@@ -131,44 +132,15 @@ let words2 = [
 ];
 
 // Determine the length of words varibles
-// and set inital value of i
 let index = words.length;
 let index2 = words2.length;
+
+// set inital value of i
 let i = 1;
 
-// Login and Registration Items
-//
-// After a successful login or registration...
-function afterLoginOrSignup(){
-
-  // Hide the login container
-  let loginCont = document.getElementById("loginCont");
-  loginCont.classList.add("hidden");
-
-  // Get local stored wizard point total
-  let wizardScoreTotal = localStorage.setItem('wizardScoreTotal',wizardScore);
-  let getWizardScoreLocal = localStorage.getItem('wizardScoreTotal');
-
-  //check to see if localstrage wizardScoreTotal is greater than 0
-  if(getWizardScoreLocal >= 0){
-      document.getElementById("wizardScore").innerHTML = wizardScore;
-  }
-  if(getWizardScoreLocal == "[object HTMLSpanElement]" || getWizardScoreLocal == undefined){
-      wizardScore = 0;
-      localStorage.setItem('wizardScoreTotal',wizardScore);
-      document.getElementById("wizardScore").innerHTML = wizardScore;
-  }
-
-  // Start playing music on login
-  setTimeout(function playMusic(){
-    document.getElementById("my_audio").play();
-  })
-
-  // Place the focus on the input field so user can start typing words as they sound them out.
-  document.getElementById("magicCheck").focus();
-}
-
 // Function for User Sign Up
+// TODO: Rewrite so that the user profile is stored in an array
+//       so that multiple users can register.
 function Signup(){
 
     let name = document.getElementById('uname');
@@ -186,11 +158,15 @@ function Signup(){
         alert('Please fill in your username and password');
 
     }else{
+
         // TODO - eventually add proper login and registration.
         // Right now just use local storage
         localStorage.setItem('username', name.value);
         localStorage.setItem('pw', pw.value);
+        // Initalize the Wizard Score point value they have.
         localStorage.setItem('wizardScoreTotal',0);
+        // Initalize the word they are on by assigining it a value.
+        localStorage.setItem('wordPosition',1);
         console.log("account created.");
         afterLoginOrSignup();
 
@@ -201,21 +177,62 @@ function Signup(){
 function Login(){
     let storedName = localStorage.getItem('username');
     let storedPw = localStorage.getItem('pw');
+
         // If a user has registered, then their wizard score has been set to
         // 0 or they have a current wizard score...
         // Let's get that so their progress is reflected.
+
         wizardScore = localStorage.getItem('wizardScoreTotal');
+
+        // If a user has registered, then to track the word they are on
+        // a value has been set. Let's get that vaule so their progress is reflected.
+
+        wordPosition = localStorage.getItem('wordPosition');
 
     let userName = document.getElementById('uname');
     let userPw = document.getElementById('psw');
     let userRemember = document.getElementById("rememberMe");
 
     if(userName.value == storedName && userPw.value == storedPw){
-      //run the after sign in function...
       afterLoginOrSignup();
     }else{
       alert('Error on login');
     }
+}
+
+// After a successful login or registration...
+function afterLoginOrSignup(){
+
+  // Hide the login container
+  // TODO: Instead of just adding the hidden class
+  //       lets make the loginCont div fade out.
+
+  let loginCont = document.getElementById("loginCont");
+  loginCont.classList.add("hidden");
+
+  // Get local stored wizard point total
+  let wizardScoreTotal = localStorage.setItem('wizardScoreTotal',wizardScore);
+  let getWizardScoreLocal = localStorage.getItem('wizardScoreTotal');
+
+  //check to see if localstrage wizardScoreTotal is greater than 0
+  if(getWizardScoreLocal >= 0){
+      // If they have a wizard score, set it on the UI so their coin has that value shown
+      document.getElementById("wizardScore").innerHTML = wizardScore;
+  }
+  if(getWizardScoreLocal == "[object HTMLSpanElement]" || getWizardScoreLocal == undefined){
+      // If they are just logging in for the first time, set their score to 0 and show that.
+      wizardScore = 0;
+      localStorage.setItem('wizardScoreTotal',wizardScore);
+      document.getElementById("wizardScore").innerHTML = wizardScore;
+  }
+
+  // Start playing music on login
+  setTimeout(function playMusic(){
+    document.getElementById("my_audio").play();
+  })
+
+  // Place the focus on the input field so user can start typing words as they sound them out.
+  document.getElementById("magicCheck").focus();
 }
 
 // Function to start or stop confetti overlay.
@@ -243,55 +260,66 @@ function callConfetti() {
 // in ways that will keep the user engaged.
 
 //
-// Display an initial word.
+// Display an initial word on load so interface is ready when they login or register.
 // Example: ch - air
+  wordPosition = localStorage.getItem('wordPosition');
+  document.getElementById("s1").innerHTML = words[wordPosition].s1 + "-";
+  document.getElementById("s2").innerHTML = '&nbsp' + words[wordPosition].s2;
 
-  document.getElementById("s1").innerHTML = words[0].s1 + "-";
-  document.getElementById("s2").innerHTML = '&nbsp' + words[0].s2;
+  // After loading the initial word, increase the word position score
+  // and write that to local storage.
+  wordPosition++;
+  localStorage.setItem('wordPosition',wordPosition);
+
+  console.log("The index of the current word is: " +wordPosition);
 
 //
-// On click of a button, display a new word
+// On click of a button or form submit, display a new word
 
 document.getElementById("nextWord").addEventListener("click", newWord);
 
 function newWord() {
-  i++;
+  // Get the value of the word position in local storage and use it to pull new word.
+  wordPosition = localStorage.getItem('wordPosition');
 
-  if(i!=0){
+  if(wordPosition!=0){
 
   // Check to see if no result is recieved.
-  if(words[i] == undefined){
+  if(words[wordPosition] == undefined){
     // TO DO: Do something after last word.
     console.log("No more words.");
     // For now, just display the first word again and start at the beginning of the loop.
-    i = 0;
+    wordPosition = 0;
   }
 
   // For any result, let's update the word shown to the user.
-  document.getElementById("s1").innerHTML = words[i].s1 + "-";
-  document.getElementById("s2").innerHTML = '&nbsp' + words[i].s2;
+  document.getElementById("s1").innerHTML = words[wordPosition].s1 + "-";
+  document.getElementById("s2").innerHTML = '&nbsp' + words[wordPosition].s2;
 
   // Reset input for the Magic Check and set the focus on that field.
   document.getElementById("magicCheck").value = "";
+
   // Keep the input active for typing the next word easily.
   document.getElementById("magicCheck").focus();
 
-  // Reward the user for getting a new word to say and type.
+  // Reward the users Wizard Point and Word Position totals.
   wizardScore++;
+  wordPosition++;
 
-  // Update the local storage to reflect their new score.
-  // TODO: Will have to update once I port this to a proper db.
+  // Update the local storage to reflect their new totals.
   localStorage.setItem('wizardScoreTotal',wizardScore);
+  localStorage.setItem('wordPosition',wordPosition);
 
   // Update their score in the UI.
   document.getElementById("wizardScore").innerHTML = wizardScore;
+
+  // Make it rain confetti if the user has earned it.
+  // TODO => Make more cool celebration interactivities based on their Wizard Points.
   callConfetti();
   }
 }
 
-//
-// Lets create a field where the user can type in the word they are reading,
-// and lets also make a function that checks to see if what they typed is correct.
+// Lets create a field that checks the current word with the input a user can type.
 
 let magicCheck = document.getElementById('magicCheck');
 function checkInput() {
@@ -312,9 +340,13 @@ function checkInput() {
     wizardScore++;
 
     // TODO: Make overlay color flash quickly.
+
     // Update their score in the UI.
     document.getElementById("wizardScore").innerHTML = wizardScore;
+
+    // Make it rain confetti if the user has earned it.
     callConfetti();
+
   } else {
     // While they have not typed the correct response, encourage them to keep trying.
     // TODO: Maybe we should consider having a section of the UI display these messages.
@@ -325,15 +357,7 @@ function checkInput() {
 
 
 
-// NEXT FEATURE => Need to store i in local storage and modify functoins to pull
-//                 from local storage to display the last word where they last left off
-//                 also need to update the local storage i var every time a newWord is
-//                 called.
-
-
-
-
-// NEXT FEATURE => Need to adjust the WORD object to pull from a JSON file or a database.
+// NEXT TODO => Need to adjust the WORD object to pull from a JSON file or a database.
 
 
 
