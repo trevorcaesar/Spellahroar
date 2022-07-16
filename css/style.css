@@ -238,15 +238,15 @@ body{overflow: hidden;}/*Layout bug hack*/
   content: "";
   background: linear-gradient(
     45deg,
-    #ff0000,
-    #ff7300,
-    #fffb00,
-    #48ff00,
+    #353fcc,
+    #f8811f,
+    #fdfb44,
+    #6ae939,
     #00ffd5,
-    #002bff,
+    #405ce8,
     #7a00ff,
     #ff00c8,
-    #ff0000
+    #ee2e2e
   );
   position: absolute;
   top: -2px;
@@ -309,7 +309,7 @@ input:focus-visible{outline: none!important;}
   position: fixed;
   bottom: -22px;
   z-index: 10;
-  width: 90%;
+  width: 96%;
 }
 
 .potter-input {

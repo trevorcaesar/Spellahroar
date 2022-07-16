@@ -1,6 +1,5 @@
 // Get the current user, if there is one.
 const currentUser = sessionStorage.getItem('key');
-const storedUsers = JSON.parse(localStorage.getItem('users'));
 
 // Set Inital Library of Words
 let dictionary = words;
@@ -17,51 +16,23 @@ function Signup(){
     let userName = document.getElementById('uname').value;
     let pw = document.getElementById('psw').value;
 
-    // Do some basic validation on the form
-    // TODO: instead of alerts - write the messages to the form
-    if(userName.length == 0){
-        alert('Please fill in your username');
+    let storedUsers = JSON.parse(localStorage.getItem('users'));
 
-    }else if(pw.length == 0){
-        alert('Please fill in password');
+    if(storedUsers != null){
+        let howManyUsers = storedUsers.length;
+        storedUsers.push({key: howManyUsers, uname: userName, pw: pw, wizardScoreTotal: 0, wordPosition: 1});
+        localStorage.setItem('users', JSON.stringify(storedUsers));
+        sessionStorage.setItem('key',howManyUsers);
+      } else {
+        let howManyUsers = 0;
+        localStorage.setItem('users', JSON.stringify([{key: howManyUsers, uname: userName, pw: pw, wizardScoreTotal: 0, wordPosition: 1}]));
+        sessionStorage.setItem('key',howManyUsers);
+      }
 
-    }else if(userName.length == 0 && pw.length == 0){
-        alert('Please fill in your username and password');
-
-    }else{
-
-        if(storedUsers){
-            let howManyUsers = storedUsers.length;
-            storedUsers.push({key: howManyUsers, uname: userName, pw: pw, wizardScoreTotal: 0, wordPosition: 1});
-            localStorage.setItem('users', JSON.stringify(storedUsers));
-            sessionStorage.setItem('key',howManyUsers);
-          } else {
-            let howManyUsers = 0;
-            localStorage.setItem('users', JSON.stringify([{key: howManyUsers, uname: userName, pw: pw, wizardScoreTotal: 0, wordPosition: 1}]));
-            sessionStorage.setItem('key',howManyUsers);
-          }
-        }
-
-        // TODO - eventually add proper login and registration.
-        // Right now just use local storage
-
-        // OLD CODE
-        // localStorage.setItem('username', name);
-        // localStorage.setItem('pw', pw);
-
-        // Initalize the Wizard Score point value they have.
-
-        // OLD CODE
-        // localStorage.setItem('wizardScoreTotal',0);
-
-        // Initalize the word they are on by assigining it a value.
-
-        // OLD CODE
-        // localStorage.setItem('wordPosition',1);
-
-        afterLoginOrSignup();
+      afterLoginOrSignup();
 
 }
+
 
 //Login
 function Login(){
@@ -69,6 +40,7 @@ function Login(){
     let userName = document.getElementById('uname').value;
     let userPw = document.getElementById('psw').value;
 
+    let storedUsers = JSON.parse(localStorage.getItem('users'));
     if(storedUsers) {
       for ( let u = 0; u<storedUsers.length; u++){
           if (userName === storedUsers[u].uname && userPw === storedUsers[u].pw){
@@ -77,26 +49,9 @@ function Login(){
             afterLoginOrSignup();
           }
       }
-      //return alert('Access denied. Valid username and password is required.');
+      // TO DO: Error handling.
     }
 }
-
-function addToLocalStorageObject(name, key, value) {
-
-	// Get the existing data
-	var existing = localStorage.getItem(name);
-
-	// If no existing data, create an array
-	// Otherwise, convert the localStorage string to an array
-	existing = existing ? JSON.parse(existing) : {};
-
-	// Add new data to localStorage Array
-	existing[key] = value;
-
-	// Save back to localStorage
-	localStorage.setItem(name, JSON.stringify(existing));
-
-};
 
 // After a successful login or registration...
 function afterLoginOrSignup(){
@@ -104,15 +59,13 @@ function afterLoginOrSignup(){
   // Hide the login container
   // TODO: Instead of just adding the hidden class
   //       lets make the loginCont div fade out.
-  // Get the information for the current user from localStorage
-
-
-  addToLocalStorageObject("wizardScoreTotal", currentUser, 100);
 
   let loginCont = document.getElementById("loginCont");
   loginCont.classList.add("hidden");
 
   // Get local stored wizard point total
+  // TO DO: Need to update this in the users object on local storage somehow
+
   let wizardScoreTotal = localStorage.setItem('wizardScoreTotal',wizardScore);
   let getWizardScoreLocal = localStorage.getItem('wizardScoreTotal');
 
@@ -161,64 +114,69 @@ function callConfetti() {
       startConfetti();
       stopConfetti();
     }
+
+// Any time someone has 20, tell them they get to go swimming.
+if (wizardScore === 20){
+  console.log("You get to go swimming.");
+}
+
+// Any time someone has 20, tell them they get to have sushi.
+if (wizardScore === 30){
+  console.log("You get to have sushi for dinner.");
+}
+
+// Any time someone has more than 100 points, change the word library to the harder words.
     if (wizardScore >= 100){
       dictionary = words2;
     }
 }
 
 // TODO: It would be cool to write more evaluations on wizardScore to interact with the DOM
-// in ways that will keep the user engaged.
+//       in ways that will keep the user engaged.
 
+
+// Get the current word position for the users
+// TO DO: Need to update this in the users object on local storage somehow
 
 wordPosition = localStorage.getItem('wordPosition');
 
-
+// Remove the trailing slash from the last syllable
 function cleanUpLastWord(){
     let lastSyl = document.getElementById("wordContainer").lastChild.innerHTML;
     let editedlastSyl = lastSyl.slice(0, -1);
     document.getElementById("wordContainer").lastChild.innerHTML = editedlastSyl;
 }
 
-function deleteChildren() {
-        var e = document.querySelector("div#wordContainer");
-        e.innerHTML = "";
-    }
+// Clear the word container so a new word can be built
+function clearWord() {
+    let clear = document.querySelector("div#wordContainer");
+    clear.innerHTML = "";
+}
 
+// Get the initial word to display for the user to read and type
 function getFirstWord(){
-
   Object.entries(dictionary[wordPosition]).map(([key, value]) => {
     if(key == "word"){
       document.getElementById("wordContainer").append(Object.assign(document.createElement('div'),{id:"word"},{textContent:value}));
     }else{
       document.getElementById("wordContainer").append(Object.assign(document.createElement('div'),{id:key},{textContent:value+"-"}));
     }
-});
+  });
 
-
-// Display an initial word on load so interface is ready when they login or register.
-// Example: ch - air
-
-// document.getElementById("wordContainer").append(Object.assign(document.createElement('div'),{class:"button-wrapper"},{id="nextWord"}));
-// document.getElementById("nextWord").append(Object.assign(document.createElement('button'),{class:"potter-button"},{textContent:"Next Word"}));
-
-
-  // document.getElementById("s1").innerHTML = words[wordPosition].s1 + "-";
-  // document.getElementById("s2").innerHTML = '&nbsp' + words[wordPosition].s2;
-
-  // After loading the initial word, increase the word position score
-  // and write that to local storage.
+// Make the count of the users word position increase
+// and set it in local storage.
   wordPosition++;
   localStorage.setItem('wordPosition',wordPosition);
+// TO DO: Need to update this in the users object on local storage somehow
 
-  console.log("The index of the current word is: " +wordPosition);
 }
-//
-// On click of a button or form submit, display a new word
 
+// On click of a button or form submit, display a new word
 document.getElementById("nextWord").addEventListener("click", newWord);
 
 function newWord() {
   // Get the value of the word position in local storage and use it to pull new word.
+  // TO DO: Need to update this in the users object on local storage somehow
   wordPosition = localStorage.getItem('wordPosition');
 
   if(wordPosition!=0){
@@ -232,8 +190,11 @@ function newWord() {
   }
 
   // For any result, let's update the word shown to the user.
-  deleteChildren();
+  clearWord();
   getFirstWord();
+
+  // TODO: Need to write a check statement to make sure the user has typed the words
+  //       before they are allowed to get a wizard point or a new word.
   cleanUpLastWord();
 
   // Reset input for the Magic Check and set the focus on that field.
@@ -247,6 +208,7 @@ function newWord() {
   wordPosition++;
 
   // Update the local storage to reflect their new totals.
+  // TO DO: Need to update this in the users object on local storage somehow
   localStorage.setItem('wizardScoreTotal',wizardScore);
   localStorage.setItem('wordPosition',wordPosition);
 
@@ -259,9 +221,10 @@ function newWord() {
   }
 }
 
-// Lets create a field that checks the current word with the input a user can type.
-
+// Let's create target a field the user can type the word into.
 let magicCheck = document.getElementById('magicCheck');
+
+// And checks the current word with the input a user types.
 function checkInput() {
   let value = magicCheck.value;
 
@@ -277,9 +240,8 @@ function checkInput() {
   if (value === correctWord) {
     console.log("Correct!");
     // Reward the user with a point.
+    // TO DO: Need to update this in the users object on local storage somehow
     wizardScore++;
-
-    // TODO: Make overlay color flash quickly.
 
     // Update their score in the UI.
     document.getElementById("wizardScore").innerHTML = wizardScore;
@@ -296,8 +258,8 @@ function checkInput() {
 
 
 
-// NEXT TODO: Rewrite so that the user profile is stored in an array
-//       so that multiple users can register.
+// NEXT TODO: Figure out how to write to and pull from the Wizard Point and Word Position items
+//            in the local storage user object for the current logged in user.
 
 
 
